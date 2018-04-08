@@ -1,0 +1,12 @@
+FROM maven:3.5.3-jdk-8-slim
+
+RUN apt-get update && \
+    apt-get install -y curl procps mysql-server mysql-client jq \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -Rf /var/lib/mysql/* \
+    && mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql \
+    && rm -f /run/mysqld/mysqld.sock \
+    && mkdir /run/mysqld/ \
+    && chown -R mysql:root /run/mysqld/
+
+CMD [ "mysqld", "--user=mysql" ]
